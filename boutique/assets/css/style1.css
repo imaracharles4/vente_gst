@@ -1,0 +1,164 @@
+body{
+    margin:0;
+    padding: 0;
+    width: 100%;
+    
+  
+  }
+  .formcli{
+  width: 50px;
+  text-align: center;
+  }
+  
+  .popup{
+  display:none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  overflow: auto;
+  transition: 0.5s;
+  background-color:DodgerBlue;
+  padding-top: 60px;
+  transition: all 0.10s;
+  }
+  
+     
+  
+  .fermer{
+      position: absolute;
+      right: 20px; top: 0;right: 10px; color:#000000; font-size: 35px;font-weight: bold;
+  }
+  
+  
+  .fermer:hover{
+      color: yellow;
+      cursor: pointer;
+  }
+  .popup a:hover {
+  color: blue;
+  }
+  
+  
+  .popup a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 20px;
+  color: whitesmoke;
+  display: block;
+  transition: 0.3s;
+  
+  
+  }
+  
+  .client{
+    margin-top: 5px;
+    color: DodgerBlue;
+    font-size: 15px;
+  }
+  
+  span{
+      margin: 5px;
+  }
+  
+  .menu{
+      font-size: 30px;
+  }
+  
+  hr{
+    color: white;
+    border-radius: 50%;
+  }
+
+  .liste{
+    font-size: 25px;
+    margin: auto;
+    text-align: center;
+    background-color:orange;
+}
+  
+  .icon{
+  margin-right: 30px;
+  
+  }
+     
+th{
+  color: orange;
+}
+  .title{
+    color: orange;
+    font-size: 55px;
+    font-weight: bold;
+    font-family: cursive;
+    padding:15px;
+  }
+  
+  .new{
+  position:fixed;
+  top:0;
+  z-index: 1;
+  }
+   
+          
+  .goma{
+    margin: 15px;
+    padding: 0;
+    color: dodgerblue;
+  }
+  
+    .card{
+        background-color:dodgerblue;
+       
+    }
+  
+    .card-content{
+        color:black;
+        font-weight: bold;
+        font-family: cursive;
+    }
+    
+    .icon{
+      margin-right: 30px;
+     }
+  
+     .ordre{
+         color:black;
+      
+     }
+  
+     .sync{
+         margin:10px;
+     }
+  
+     .triangle{
+         font-size:200px;
+         width:50px;
+         height:50px;
+         padding:100px;
+         margin:auto;
+     }
+  
+     .today{
+         font-family:cursive;
+         font-size:18px;
+         font-weight:bold;
+         margin-top:25px;
+         
+     }
+  
+  
+     @media (max-width: 870px) {
+      .title{
+      font-size: 30px;
+      font-family: fantasy;
+  }
+  
+  .table{
+    display:inline;
+    font-size:10px;
+  }
+
+  }
+ 
