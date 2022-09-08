@@ -1,35 +1,41 @@
 <?php 
 
 include 'constant/layout/head.php';
- require_once('constant/layout/header.php');
- require 'categorie.php'
-  ?>
+require_once('constant/layout/header.php');
+?>
+
+
+	
+<?php require 'categorie.php' ?>
 				
 				<div class="col-sm-9 padding-right">
-				
+				<?php 
+						$sql = "SELECT * FROM petite_categorie WHERE id_petite_categorie = {$_GET["id"]}";
+						$result = $connect->query($sql);
+						$row = mysqli_fetch_assoc($result);
+						
+				?>
 					<div class="features_items"><!--features_items-->
 					
-						<h2 class="title text-center" id="">tout les produits</h2>
-						<?php 	
-						$sqlp="SELECT * FROM `articles` a inner join `boutiques` b on a.boutique = b.idBoutique where b.statut != 2  ";
-						$resultp = $connect->query($sqlp);
-				
-						$count = mysqli_num_rows($resultp);
-						@$page = $_GET["page"];
-						if(empty($page)) $page=1; 
-						$nbr_element_par_page=6;
-						$nbr_de_page=ceil($count/$nbr_element_par_page);
-						$debut = ($page-1)* $nbr_element_par_page;
-					
-					
-					$sql2="SELECT * FROM `articles` a inner join `boutiques` b on a.boutique = b.idBoutique where b.statut != 2 limit {$debut} , {$nbr_element_par_page} ";
-						$result2 = $connect->query($sql2);
-						if (mysqli_num_rows($result2)==0) {
-							echo "<meta http-equiv='refresh' content='0; URL=shop.php'>";
-							exit;
-						}
-											
+						<h2 class="title text-center" id="<?php echo $row['designation']  ?>"><?php echo $row['designation']  ?>s</h2>
+						<?php 	$sqlp="SELECT * FROM `articles` a inner join `boutiques` b on a.boutique = b.idBoutique where b.statut != 2 and a.categorie = '".$row['id_petite_categorie']."' ";
+						        $resultp = $connect->query($sqlp);
+						
+						    $count = mysqli_num_rows($resultp);
+						    @$page = $_GET["page"];
+							if(empty($page)) $page=1; 
+							$nbr_element_par_page=6;
+							$nbr_de_page=ceil($count/$nbr_element_par_page);
+                            $debut = ($page-1)* $nbr_element_par_page;
+							
+							$sql2="SELECT * FROM `articles` a inner join `boutiques` b on a.boutique = b.idBoutique where b.statut != 2 and a.categorie = '".$row['id_petite_categorie']."' limit {$debut} , {$nbr_element_par_page} ";
+						    $result2 = $connect->query($sql2);
+                            if (mysqli_num_rows($result2)==0) {
+                                echo "<meta http-equiv='refresh' content='0; URL=product_categorie.php?id={$_GET["id"]}'>";
+                                exit;
+                            }
 						foreach ($result2 as $row2) {
+                            
 						?>
 						<div class="col-sm-4">
 							<div class="product-image-wrapper">
@@ -37,7 +43,7 @@ include 'constant/layout/head.php';
 										<div class="productinfo text-center">
 										<a href="product-details.php?produit=<?php echo $row2['idArticles']  ?>"><img src="images/home/<?php echo $row2['photoArticle']  ?>" alt="" style="width:268px ; height:249px;"/></a>
 											<h2>$<?php echo $row2['prixUnitaire']  ?></h2>
-											<p><?php echo $row2['desiArticle']  ?></p>											
+											<p><?php echo $row2['desiArticle']  ?></p>
 											<?php 	$sql5="SELECT * from like_produit  where idarticle='".$row2['idArticles']."'";
 											$result5 = $connect->query($sql5);
 											$row5 = mysqli_num_rows($result5);
@@ -77,8 +83,9 @@ include 'constant/layout/head.php';
 								</div>
 								<div class="choose">
 									<ul class="nav nav-pills nav-justified">
-										<li><button class=" btn-primary" onclick="like(<?php echo $row2['idArticles']  ?>,<?php echo  (!empty($_SESSION['idclient'])) ?  $_SESSION['idclient'] : '' ;  ?>)" ><i class="fa fa-thumbs-up"></i> Like</button></li>
-										<li><a href="product-details.php?produit=<?php echo $row2['idArticles']  ?>"><i class="fa fa-plus-square"></i>Voir le détail</a></li>
+										<li><a style="cursor: pointer; color:#fe0f0f;" class="btn-primary" onclick="like(<?php echo $row2['idArticles']  ?>,<?php echo  (!empty($_SESSION['idclient'])) ?  $_SESSION['idclient'] : '' ;  ?>)" ><i class="fa fa-thumbs-up"></i> Like</a></li>
+										<li><a style="cursor: pointer; color:#fe0f0f;" class="btn btn-default add-to-cart" onclick="ajout_panier(<?php echo $row2['idArticles']  ?>)"><i class="fa fa-shopping-cart"></i>Add to cart</a></li>
+										<!-- <li><a href="product-details.php?produit=<?php echo $row2['idArticles']  ?>"><i class="fa fa-plus-square"></i>détail</a></li> -->
 									</ul>
 								</div>
 								
@@ -86,15 +93,17 @@ include 'constant/layout/head.php';
 							
 						</div>
 						<?php  }  ?>
+						
+						</div>
 						<div class="pagination-area">
 							<ul class="pagination">
 						<?php
 						    
 							for ($i=1; $i <= $nbr_de_page; $i++) {
 								if ($page!=$i) {
-									echo "<li><a href='?page=$i' class=''>$i</a></li>";
+									echo "<li><a href='?id={$_GET["id"]}&page=$i' class=''>$i</a></li>";
 								} else {
-									echo "<li><a href='?page=$i' class='active'>$i</a></li>";
+									echo "<li><a href='?id={$_GET["id"]}&page=$i' class='active'>$i</a></li>";
 								}
 								 
 								
@@ -107,6 +116,9 @@ include 'constant/layout/head.php';
 						
 						
 					</div><!--features_items-->
+					<?php    ?>
+					
+					
 				</div>
 			</div>
 		</div>
@@ -118,7 +130,7 @@ include 'constant/layout/head.php';
 				<div class="row">
 					<div class="col-sm-2">
 						<div class="companyinfo">
-							<h2><span>e</span>-shopper</h2>
+							<h2><span>Gst</span>-sales</h2>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
 						</div>
 					</div>
@@ -200,11 +212,11 @@ include 'constant/layout/head.php';
 						<div class="single-widget">
 							<h2>Service</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Online Help</a></li>
-								<li><a href="">Contact Us</a></li>
-								<li><a href="">Order Status</a></li>
-								<li><a href="">Change Location</a></li>
-								<li><a href="">FAQ’s</a></li>
+								<li><a href="#">Online Help</a></li>
+								<li><a href="#">Contact Us</a></li>
+								<li><a href="#">Order Status</a></li>
+								<li><a href="#">Change Location</a></li>
+								<li><a href="#">FAQ’s</a></li>
 							</ul>
 						</div>
 					</div>
@@ -212,11 +224,11 @@ include 'constant/layout/head.php';
 						<div class="single-widget">
 							<h2>Quock Shop</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">T-Shirt</a></li>
-								<li><a href="">Mens</a></li>
-								<li><a href="">Womens</a></li>
-								<li><a href="">Gift Cards</a></li>
-								<li><a href="">Shoes</a></li>
+								<li><a href="#">T-Shirt</a></li>
+								<li><a href="#">Mens</a></li>
+								<li><a href="#">Womens</a></li>
+								<li><a href="#">Gift Cards</a></li>
+								<li><a href="#">Shoes</a></li>
 							</ul>
 						</div>
 					</div>
@@ -224,11 +236,11 @@ include 'constant/layout/head.php';
 						<div class="single-widget">
 							<h2>Policies</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Terms of Use</a></li>
-								<li><a href="">Privecy Policy</a></li>
-								<li><a href="">Refund Policy</a></li>
-								<li><a href="">Billing System</a></li>
-								<li><a href="">Ticket System</a></li>
+								<li><a href="#">Terms of Use</a></li>
+								<li><a href="#">Privecy Policy</a></li>
+								<li><a href="#">Refund Policy</a></li>
+								<li><a href="#">Billing System</a></li>
+								<li><a href="#">Ticket System</a></li>
 							</ul>
 						</div>
 					</div>
@@ -236,11 +248,11 @@ include 'constant/layout/head.php';
 						<div class="single-widget">
 							<h2>About Shopper</h2>
 							<ul class="nav nav-pills nav-stacked">
-								<li><a href="">Company Information</a></li>
-								<li><a href="">Careers</a></li>
-								<li><a href="">Store Location</a></li>
-								<li><a href="">Affillate Program</a></li>
-								<li><a href="">Copyright</a></li>
+								<li><a href="#">Company Information</a></li>
+								<li><a href="#">Careers</a></li>
+								<li><a href="#">Store Location</a></li>
+								<li><a href="#">Affillate Program</a></li>
+								<li><a href="#">Copyright</a></li>
 							</ul>
 						</div>
 					</div>
@@ -262,7 +274,7 @@ include 'constant/layout/head.php';
 		<div class="footer-bottom">
 			<div class="container">
 				<div class="row">
-					<p class="pull-left">Copyright © 2013 E-Shopper. All rights reserved.</p>
+					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
 					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
 				</div>
 			</div>
@@ -273,11 +285,12 @@ include 'constant/layout/head.php';
 
   
     <script src="js/jquery.js"></script>
-	<script src="js/price-range.js"></script>
-    <script src="js/jquery.scrollUp.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.scrollUp.min.js"></script>
+	<script src="js/price-range.js"></script>
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
-	<script src="javascript_action/like.js"></script>
+    <script src="javascript_action/like.js"></script>
+    <script src="javascript_action/panier.js"></script>
 </body>
 </html>

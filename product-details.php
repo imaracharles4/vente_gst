@@ -18,6 +18,7 @@ include 'constant/layout/head.php';
 		$result = $connect->query($sql);
 							
 		$row = mysqli_fetch_assoc($result);
+		$vendeur = $client->get_vendeur($row['idClient']);
 		
 	}
 	
@@ -30,43 +31,24 @@ include 'constant/layout/head.php';
 						<div class="col-sm-5">
 							<div class="view-product">
 								<img src="images/home/<?php echo $row2['photoArticle']  ?>" alt="" />
-								<a href="http://api.whatsapp.com/send?phone=<?php echo $row['telephone']  ?>" target="_blank" rel="noopener noreferrer">
+								<a href="http://api.whatsapp.com/send?phone=<?php echo $vendeur->numero  ?>" target="_blank" rel="noopener noreferrer">
 								<h3>CONTACTER</h3>
 								 </a>
 							</div>
-							<?php $sql3="SELECT * from images  where idArticles='".$_GET['produit']."'";
-			                  $re = $connect->query($sql3);
-									
-						?>
+							
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
 								
 								  <!-- Wrapper for slides -->
 								    <div class="carousel-inner">
-						<?php $i = 0;
-						foreach ($re as $k => $row4) {
-							$actives = '';
-							if ($i == 0) {
-								$actives = 'active';
-							}
-						 
-						 ?>
-										<div class="item <?php echo $actives ?>">
-										  <a href=""><img src="images/home/<?php echo $row4['photo']  ?>" alt="" style="width: 85px; height: 84px;"></a>
-										  <a href=""><img src="images/home/<?php echo $row4['photo']  ?>" alt="" style="width: 85px; height: 84px;"></a>
-										  <a href=""><img src="images/home/<?php echo $row4['photo']  ?>" alt="" style="width: 85px; height: 84px;"></a>
-										</div>
-										<?php $i++; } ?>
+						
+										
+										
 										
 									</div>
 
 								  <!-- Controls -->
 								  
-								  <a class="left item-control" href="#similar-product" data-slide="prev">
-									<i class="fa fa-angle-left"></i>
-								  </a>
-								  <a class="right item-control" href="#similar-product" data-slide="next">
-									<i class="fa fa-angle-right"></i>
-								  </a>
+								  
 							</div>
 
 						</div>
@@ -79,17 +61,15 @@ include 'constant/layout/head.php';
 								<span>
 									<span>US $<?php echo $row2['prixUnitaire']  ?></span>
 									<label>en stock:</label>
-									<input type="text" value="<?php echo $row2['quantiteStock']  ?>" />
-									<a href="http://api.whatsapp.com/send?phone=<?php echo $row['telephone']  ?>" target="_blank" rel="noopener noreferrer">
-									<button type="button" class="btn btn-fefault cart">
+									<input type="text" disabled value="<?php echo $row2['quantiteStock']  ?>" />									
+									<button type="button" onclick="ajout_panier(<?php echo $row2['idArticles']  ?>)" class="btn btn-fefault cart">
 										<i class="fa fa-shopping-cart"></i>
 										Add to cart
-									</button>
-									</a>
+									</button>									
 								</span>
-								<p><b>Vendeur(se):</b> <?php echo $row['nom']." ".$row['postnom']." ".$row['prenom']  ?></p>
+								<p><b>Vendeur(se):</b> <?php echo $vendeur->nom." ".$vendeur->prenom  ?></p>
 								<p><b>Adresse:</b> <?php echo $row['adresse']  ?></p>
-								<p><b>Téléphone:</b> <?php echo $row['telephone']  ?></p>
+								<p><b>Téléphone:</b> <?php echo $vendeur->numero  ?></p>
 								<p><b>Adresse mail:</b> <?php echo $row['mail']  ?></p>
 								<p><b>Boutique:</b> <?php echo $row['boutique']  ?></p>
 								<?php 	$sql5="SELECT * from like_produit  where idarticle='".$row2['idArticles']."'";
@@ -133,36 +113,38 @@ include 'constant/layout/head.php';
 					
 					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
-							<ul class="nav nav-tabs">
-								<li><a href="#details" data-toggle="tab">Details</a></li>
-								<li><a href="#plusproduit" data-toggle="tab">Plus des produits</a></li>
-								<li><a href="blog.php?vendeur=<?php echo $row2['boutique'] ?>">Blog</a></li>
-								<li class="active"><a href="#reviews" data-toggle="tab">Contacter le vendeur</a></li>
+							<ul class="nav nav-tabs">								
+								<li class="active"><a href="#plusproduit" data-toggle="tab">Plus des produits de la boutique</a></li>
+								<li><a href="blog.php?vendeur=<?php echo $row['idboutique'] ?>">Blog</a></li>
+								<li ><a href="" data-toggle="tab">Contacter le vendeur</a></li>
 							</ul>
 						</div>
 						<div class="tab-content">
-							<div class="tab-pane fade" id="details" >
-							<?php $sql3="SELECT * from images  where idArticles='".$_GET['produit']."'";
-			                  $result3 = $connect->query($sql3);
+							<!-- <div class="tab-pane fade" id="details" >
+							<?php 
+						// 	$sql3="SELECT * from images  where idArticles='".$_GET['produit']."'";
+			            //       $result3 = $connect->query($sql3);
 											
-						foreach ($result3 as $row3) {
+						// foreach ($result3 as $row3) {
 						?>
 								<div class="col-sm-3">
 									<div class="product-image-wrapper">
 										<div class="single-products">
 											<div class="productinfo text-center">
-											   <img src="images/home/<?php echo $row3['photo']  ?>" alt="" style="width: 258px; height: 190px;"/>
+											   <img src="images/home/<?php //echo $row3['photo']  ?>" alt="" style="width: 258px; height: 190px;"/>
 												
 												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
 											</div>
 										</div>
 									</div>
 								</div>
-								<?php } ?>
-							</div>
+								<?php //} ?>
+							</div> -->
 							
-							<div class="tab-pane fade" id="plusproduit" >
-							<?php $sql1="SELECT * from articles  where boutique='".$row2['boutique']."'";
+							<div class="tab-pane fade active in" id="plusproduit" >
+							<?php 
+							
+						$sql1="SELECT * from `articles` a inner join `boutiques` b on a.boutique = b.idBoutique where b.statut != 2 and a.boutique='".$row2['idboutique']."' ORDER BY a.idArticles DESC ";
 			                  $result1 = $connect->query($sql1);
 											
 						foreach ($result1 as $row1) {
@@ -174,7 +156,7 @@ include 'constant/layout/head.php';
 											<a href="product-details.php?produit=<?php echo $row1['idArticles']  ?>"><img src="images/home/<?php echo $row1['photoArticle']  ?>" alt="" style="width: 208px; height: 183px;"/></a>
 												<h2>$<?php echo $row1['prixUnitaire']  ?></h2>
 												<p><?php echo $row1['desiArticle']  ?></p>
-												<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+												<button type="button" onclick="ajout_panier(<?php echo $row1['idArticles']  ?>)" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
 											</div>
 										</div>
 									</div>
@@ -182,119 +164,12 @@ include 'constant/layout/head.php';
 								<?php } ?>
 							</div>
 														
-							<div class="tab-pane fade active in" id="reviews" >
-								<div class="col-sm-12">
-									
-									<p>Pour contacter le vendeur vous pouvez juste lui lesser votre message en renseignat les champs ci-aprés dont votre<strong> nom complait </strong> votre <strong> numéro de téléphone</strong> et <strong>votre Message</strong> </p>
-									<p><b>Write Your Review</b></p>
-									
-									<form action="#">
-										<span>
-											<input type="text" placeholder="Votre nom"/>
-											<input type="email" placeholder="Votre numéro"/>
-										</span>
-										<textarea name="" ></textarea>
-										<!-- <b>Rating: </b> <img src="images/product-details/rating.png" alt="" /> -->
-										<button type="button" class="btn btn-default pull-right">
-											Envoyer
-										</button>
-									</form>
-								</div>
-							</div>
+							
 							
 						</div>
 					</div><!--/category-tab-->
 					
-					<div class="recommended_items"><!--recommended_items-->
-						<h2 class="title text-center">recommended items</h2>
-						
-						<div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner">
-								<div class="item active">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend2.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend3.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="item">	
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend1.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend2.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-4">
-										<div class="product-image-wrapper">
-											<div class="single-products">
-												<div class="productinfo text-center">
-													<img src="images/home/recommend3.jpg" alt="" />
-													<h2>$56</h2>
-													<p>Easy Polo Black Edition</p>
-													<button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							 <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-								<i class="fa fa-angle-left"></i>
-							  </a>
-							  <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-								<i class="fa fa-angle-right"></i>
-							  </a>			
-						</div>
-					</div><!--/recommended_items-->
+					
 					
 				</div>
 			</div>
@@ -468,5 +343,6 @@ include 'constant/layout/head.php';
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/main.js"></script>
 	<script src="javascript_action/like.js"></script>
+	<script src="javascript_action/panier.js"></script>
 </body>
 </html>

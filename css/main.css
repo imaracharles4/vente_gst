@@ -1641,7 +1641,9 @@ h2.title {
   width: 35px;
   float: left;
 }
-
+.cart_quantity_button a:hover {
+  background:#fe0f0f
+}
 
 .cart_quantity_input {
   color: #696763;

@@ -10,13 +10,42 @@ include 'constant/layout/head.php';
 						<h2 class="title text-center">Latest From our Blog</h2>
 						<?php 
 						      if (isset($_GET['vendeur'])) {
-								$sql3="SELECT * from blog  where vendeur='".$_GET['vendeur']."' ORDER BY idblog DESC";
+								$sqlp="SELECT * from `blog` a inner join `boutiques` b on a.vendeur = b.idBoutique where b.statut != 2 AND vendeur='".$_GET['vendeur']."'  ";
+								$resultp = $connect->query($sqlp);
+						
+								$count = mysqli_num_rows($resultp);
+								@$page = $_GET["page"];
+								if(empty($page)) $page=1; 
+								$nbr_element_par_page=6;
+								$nbr_de_page=ceil($count/$nbr_element_par_page);
+								$debut = ($page-1)* $nbr_element_par_page;
+								
+								$sql3="SELECT * from `blog` a inner join `boutiques` b on a.vendeur = b.idBoutique where b.statut != 2 AND vendeur='".$_GET['vendeur']."' ORDER BY idblog DESC limit {$debut} , {$nbr_element_par_page}";
 								$result3 = $connect->query($sql3);
+								if (mysqli_num_rows($result3)==0) {
+									echo "<meta http-equiv='refresh' content='0; URL=blog.php?vendeur={$_GET['vendeur']}'>";
+									exit;
+								}
+
 								
 							  } else {
-								$sql3="SELECT * from blog  ORDER BY idblog DESC";
+								$sqlp="SELECT * FROM `blog` a inner join `boutiques` b on a.vendeur = b.idBoutique where b.statut != 2  ";
+								$resultp = $connect->query($sqlp);
+						
+								$count = mysqli_num_rows($resultp);
+								@$page = $_GET["page"];
+								if(empty($page)) $page=1; 
+								$nbr_element_par_page=6;
+								$nbr_de_page=ceil($count/$nbr_element_par_page);
+								$debut = ($page-1)* $nbr_element_par_page;
+								
+								$sql3="SELECT * from blog  ORDER BY idblog DESC limit {$debut} , {$nbr_element_par_page}";
 								$result3 = $connect->query($sql3);
 								
+								if (mysqli_num_rows($result3)==0) {
+									echo "<meta http-equiv='refresh' content='0; URL=blog.php'>";
+									exit;
+								}
 							  }
 							   				
 						foreach ($result3 as $row3) {
@@ -24,13 +53,14 @@ include 'constant/layout/head.php';
 								$result = $connect->query($sql);
 													
 								$row = mysqli_fetch_assoc($result);
+								$vendeur = $client->get_vendeur($row['idClient']);
 						?>
 						<div class="single-blog-post">
 							<h3><?php echo $row3['titre']  ?></h3>
 							<div class="post-meta">
 								<ul>
-								<li><i class="fa fa-user"></i> <?php echo $row['nom']." ".$row['postnom']." ".$row['prenom']  ?></li>
-								<li><i class="fa fa-phone"></i> <?php echo $row['telephone']  ?></li>
+								<li><i class="fa fa-user"></i> <?php echo $vendeur->nom." ".$vendeur->prenom  ?></li>
+								<li><i class="fa fa-phone"></i> <?php echo $vendeur->numero  ?></li>
 									<li><i class="fa fa-clock-o"></i> <?php echo date(' H:s',strtotime($row3['date'])) ?></li>
 									<li><i class="fa fa-calendar"></i> <?php echo date(' d/m/Y',strtotime($row3['date'])) ?></li>
 								</ul>
@@ -43,7 +73,7 @@ include 'constant/layout/head.php';
 								</span>
 							</div>
 							<a href="">
-								<img src="images/blog/<?php echo $row3['image']  ?>" alt="" style="width:866px; height: 369px;">
+								<img src="images/blog/<?php echo $row3['image']  ?>" alt="">
 							</a>
 							<p><?php echo substr($row3['description'], 0 , 250). '...';  ?></p>
 							<a  class="btn btn-primary" href="blog-single.php?id=<?php echo $row3['idblog']  ?>">Lire plus</a>
@@ -52,12 +82,31 @@ include 'constant/layout/head.php';
 						
 						<div class="pagination-area">
 							<ul class="pagination">
-								<li><a href="" class="active">1</a></li>
-								<li><a href="">2</a></li>
-								<li><a href="">3</a></li>
-								<li><a href=""><i class="fa fa-angle-double-right"></i></a></li>
+						<?php
+						    
+							for ($i=1; $i <= $nbr_de_page; $i++) {
+								if ($page!=$i) {
+									if (isset($_GET['vendeur']))
+									echo "<li><a href='?vendeur={$_GET['vendeur']}&page=$i' class=''>$i</a></li>";
+									else
+									echo "<li><a href='?page=$i' class=''>$i</a></li>";
+								} else {
+									if (isset($_GET['vendeur']))
+									echo "<li><a href='?vendeur={$_GET['vendeur']}&page=$i' class='active'>$i</a></li>";
+									else
+									echo "<li><a href='?page=$i' class='active'>$i</a></li>";
+								}
+								 
+								
+							}
+							
+						?> 	
 							</ul>
-						</div>
+						
+						
+						
+						
+					</div>
 					</div>
 				</div>
 			</div>

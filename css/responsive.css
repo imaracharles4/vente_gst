@@ -29,7 +29,7 @@
 
 #cart_items .cart_info .cart_description h4, 
 #cart_items .cart_info .cart_description p{
-	text-align: center;
+	text-align: right;
 } 
 
 }
@@ -103,7 +103,7 @@
 }
 
 #cart_items .cart_info .cart_description h4, #cart_items .cart_info .cart_description p{
-	text-align: center;
+	text-align: right;
 }
 
 .companyinfo h2{

@@ -1,7 +1,9 @@
 
 <?php 
 	 include('../constant/connect.php');
-        
+	 include 'Push.php';
+ 
+	 $push = new Push($connect); 
 
 	    $idarticle = $_POST['article'];
 	    $client = $_POST['client'];
@@ -17,7 +19,14 @@
 		
 
 		if (mysqli_query($connect, $requete)) {
-			echo 1;
+			$sqlv="SELECT * from articles  where idArticles='$idarticle'";
+		    $resultv = $connect->query($sqlv);
+			$ligne=mysqli_fetch_assoc($resultv);
+			$id_to=$ligne['boutique'];
+			$time = date('Y-m-d H:i:s');
+			if ($push->saveNotification($client, $id_to, 1, $idarticle)) {
+				echo 1;
+			}
 		}
 		elseif($client =='')
 		{
