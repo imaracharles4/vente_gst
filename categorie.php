@@ -29,7 +29,7 @@ $result = $connect->query($sql);
 															
 										foreach ($result2 as $row2) {				
 								        ?> 
-											<li><a href="index.php#<?php  echo $row2['designation'] ?>"><?php  echo $row2['designation'] ?> </a></li>
+											<li><a href="product_categorie.php?id=<?php  echo $row2['id_petite_categorie'] ?>"><?php  echo $row2['designation'] ?> </a></li>
 											
 											<?php  }  ?>
 										</ul>

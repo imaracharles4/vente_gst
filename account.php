@@ -7,9 +7,11 @@ include 'constant/layout/head.php';
 	<section ><!--form-->
 		<div class="container">
 			<div class="row">
+			
 				<div class="col-sm-4 col-sm-offset-1">
+				<?php if ($client->is_vendeur($_SESSION['idclient'])) {?>
 					<div class="login-form"><!--login form-->
-						<h2>Connexion à votre  boutique</h2>
+						<h2>Connexion à votre boutique</h2>
 						<form action="php_action/account.php" method="POST">
 							<input type="text" name="login" placeholder="Votre boutique" />
 							<input type="password" name="password" placeholder="Mot de pass" />
@@ -20,26 +22,27 @@ include 'constant/layout/head.php';
 							<button type="submit" name="valider" class="btn btn-default">Connexion</button>
 						</form>
 					</div><!--/login form-->
+					
+					<?php } else {?>
 				</div>
-				<div class="col-sm-1">
-					<h2 class="or">OU</h2>
-				</div>
+				
+				
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
+					
+						
 						<h2>Créer un compte pour votre boutique</h2>
 						<form action="php_action/nouv_boutique.php" method="POST">
-							<input type="text" name="nom" placeholder="Nom"/>
-							<input type="text" name="postnom" placeholder="postnom"/>
-							<input type="text" name="prenom" placeholder="prenom"/>
-							<input type="text" name="telephone" placeholder="Téléphone"/>
-							<input type="text" name="adresse" placeholder="Adresse"/>
-							<input type="text" name="boutique" placeholder="Boutique"/>
+						    <input type="text" name="boutique" placeholder="Nom Boutique"/>
+							<input type="text" name="adresse" placeholder="Adresse"/>							
 							<input type="text" name="mail" placeholder="Adresse mail"/>
-							<input type="password" name="password" placeholder="Mot de pass"/>
+							<input type="password" name="password" placeholder="Mot de pass Boutique"/>
 							<button type="submit" name="enregistrer" class="btn btn-default">Enregistrer</button>
 						</form>
 					</div><!--/sign up form-->
 				</div>
+				
+				<?php }	?>
 			</div>
 		</div>
 	</section><!--/form-->
@@ -212,5 +215,7 @@ include 'constant/layout/head.php';
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/main.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="javascript_action/notification.js"></script>
 </body>
 </html>

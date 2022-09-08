@@ -1,6 +1,9 @@
 <link href="../css/popup_style.css" rel="stylesheet">
 <?php
  include('../constant/connect.php');
+  include 'm_client.php';
+ 
+ $client= new Client($connect); 
  session_start();
 if(isset($_POST['valider'])) {    
 
@@ -32,7 +35,7 @@ if(empty($login) || empty($password)) {
       // set session
        $_SESSION['idboutique'] = $user_id;
        $_SESSION['boutique'] = $value['boutique'];
-       $_SESSION['nom'] = $value['nom']." ".$value['prenom'];
+       $_SESSION['nom'] = $client->get_vendeur($value['idClient'])->nom." ".$client->get_vendeur($value['idClient'])->prenom;
       ?>
 
     

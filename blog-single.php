@@ -12,6 +12,7 @@ include 'constant/layout/head.php';
 	$result = $connect->query($sql);
 						
 	$row = mysqli_fetch_assoc($result);
+	$vendeur = $client->get_vendeur($row['idClient']);
 ?>
 				<div class="col-sm-9">
 					<div class="blog-post-area">
@@ -20,8 +21,8 @@ include 'constant/layout/head.php';
 							<h3><?php echo $row2['titre']  ?></h3>
 							<div class="post-meta">
 								<ul>
-									<li><i class="fa fa-user"></i> <?php echo $row['nom']." ".$row['postnom']." ".$row['prenom']  ?></li>
-									<li><i class="fa fa-phone"></i> <?php echo $row['telephone']  ?></li>
+									<li><i class="fa fa-user"></i> <?php echo $vendeur->nom." ".$vendeur->prenom  ?></li>
+									<li><i class="fa fa-phone"></i> <?php echo $vendeur->numero  ?></li>
 									<li><i class="fa fa-clock-o"></i> <?php echo date(' H:s',strtotime($row2['date'])) ?></li>
 									<li><i class="fa fa-calendar"></i> <?php echo date(' d/m/Y',strtotime($row2['date'])) ?></li>
 								</ul>

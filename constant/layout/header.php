@@ -1,7 +1,12 @@
 <?php 
+session_start();
 
-// include('./constant/check.php');
  require_once('./constant/connect.php');
+ include 'php_action/m_panier.php';
+ include 'php_action/m_client.php';
+
+$panier= new panier($connect);
+$client= new Client($connect);
 ?>
     
     <body>
@@ -40,37 +45,19 @@
 							<a href="index.php"><img src="images/home/logo.png" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									USA
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canada</a></li>
-									<li><a href="#">UK</a></li>
-								</ul>
-							</div>
+														
 							
-							<div class="btn-group">
-								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-									DOLLAR
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu">
-									<li><a href="#">Canadian Dollar</a></li>
-									<li><a href="#">Pound</a></li>
-								</ul>
-							</div>
 						</div>
 					</div>
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="account.php"><i class="fa fa-user"></i> Boutique</a></li>
-								<li><a href="logout.php"><i class="fa fa-star"></i> logout</a></li>
+							    <?= isset($_SESSION['idclient']) ? "<li><a href='account.php'><i class='fa fa-user'></i> Boutique</a></li>": "" ; ?>
+								
 								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.php"><i class="fa fa-lock"></i> Login</a></li>
+								<li><a href="cart.php" ><i class="fa fa-shopping-cart"></i><span style="color:#fe0f0f;"><?php echo $panier->count_p() ?></span> Cart</a></li>
+								<?= isset($_SESSION['idclient']) ? "<li><a href='logout.php'><i class='fa fa-user'></i> Logout</a></li>": "<li><a href='login.php'><i class='fa fa-user'></i> Login</a></li>" ; ?>
+								
 							</ul>
 						</div>
 					</div>

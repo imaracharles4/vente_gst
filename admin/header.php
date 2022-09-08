@@ -1,6 +1,6 @@
 <?php 
 session_start();
-if ($_SESSION['idboutique']) {
+if ($_SESSION['iduser']) {
     require("../constant/connect.php");
  
 ?>
@@ -74,7 +74,7 @@ if ($_SESSION['idboutique']) {
               
            <?php 	
 }else {
-    header('location: ../account.php');
+    header('location: index.php');
  } ?>      	
 
   <style>

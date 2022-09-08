@@ -208,5 +208,8 @@ include 'constant/layout/head.php';
     <script src="js/jquery.prettyPhoto.js"></script>
     <script src="js/popper.min.js"></script>
     <script src="js/main.js"></script>
+	<script src="js/push.min.js"></script>
+    <script src="js/serviceWorker.min.js"></script>
+	<script src="javascript_action/notification.js"></script>
 </body>
 </html>

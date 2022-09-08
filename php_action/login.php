@@ -27,10 +27,9 @@ if(empty($login) || empty($password)) {
 
     if($mainResult->num_rows == 1) {
       $value = $mainResult->fetch_assoc();
-      $user_id = $value['idClient'];
-
+     
       // set session
-       $_SESSION['idclient'] = $user_id;
+       $_SESSION['idclient'] = $value['idClient'];
       ?>
 
     
